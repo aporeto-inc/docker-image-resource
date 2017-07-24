@@ -60,7 +60,7 @@ func main() {
 		registryHost = registryMirrorUrl.Host
 	}
 
-	tag := request.Source.Tag
+	tag := request.Source.Tag.String()
 	if tag == "" {
 		tag = "latest"
 	}
@@ -191,6 +191,7 @@ func makeTransport(logger lager.Logger, request CheckRequest, registryHost strin
 
 	pingClient := &http.Client{
 		Transport: retryRoundTripper(logger, authTransport),
+		Timeout: 1 * time.Minute,
 	}
 
 	challengeManager := auth.NewSimpleChallengeManager()
